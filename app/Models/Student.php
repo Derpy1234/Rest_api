@@ -13,10 +13,14 @@ class Student extends Model
 
     protected $table = 'students';
     protected $fillable = [
-        'nis',
         'nama',
-        'rombel',
-        'rayon',
+        'email',
         'tgl_lahir',
+        'no_tlpn',
+        'linkedin',
+        'instagram',
+        'facebook',
+        'twitter',
+        'image',
     ];
 }

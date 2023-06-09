@@ -41,19 +41,34 @@ class StudentController extends Controller
     {
         try{
             $request->validate([
-                'nis' => 'required',
                 'nama' => 'required',
-                'rombel' => 'required',
-                'rayon' => 'required',
+                'email' => 'required',
                 'tgl_lahir' => 'required',
+                'no_tlpn' => 'required',
+                'linkedin' => 'required',
+                'instagram' => 'required',
+                'facebook' => 'required',
+                'twitter' => 'required',
             ]);
 
+            $images = null;
+            if($request->file){
+                $extension = $request->file('file')->getClientOriginalExtension();
+                $images = $request->nama.'-'.now()->timestamp.'.'.$extension;
+                $request->file('file')->move(public_path('storage/'), $images);
+            }
+            $request['image'] = $images;
+
             $student = Student::create([
-                'nis' => $request->nis,
                 'nama' => $request->nama,
-                'rombel' => $request->rombel,
-                'rayon' => $request->rayon,
+                'email' => $request->email,
                 'tgl_lahir' => $request->tgl_lahir,
+                'no_tlpn' => $request->no_tlpn,
+                'linkedin' => $request->linkedin,
+                'instagram' => $request->instagram,
+                'facebook' => $request->facebook,
+                'twitter' => $request->twitter,
+                'image' =>  $images,
             ]);
 
             $test = Student::where('id', '=', $student->id)->get();
@@ -62,7 +77,7 @@ class StudentController extends Controller
             }else{
                 return ApiFormatter::createApi(400, 'failed');
             }
-        }
+         }
         catch(Exception $error){
             return ApiFormatter::createApi(400, 'failed', $error);
         }
@@ -108,21 +123,37 @@ class StudentController extends Controller
     {
         try{
             $request->validate([
-                'nis' => 'required|min:5',
-                'nama' => 'required|min:3',
-                'rombel' => 'required',
-                'rayon' => 'required',
+                'nama' => 'required',
+                'email' => 'required',
                 'tgl_lahir' => 'required',
+                'no_tlpn' => 'required',
+                'linkedin' => 'required',
+                'instagram' => 'required',
+                'facebook' => 'required',
+                'twitter' => 'required',
+                'image' => 'required',
             ]);
+
+            if($request->file('image'))
+            {
+                $extension = $request->file('image')->getClientOriginalExtension();
+                $newName = $request->title.'-'.now()->timestamp.'.'.$extension;
+                $request->file('image')->storeAs('cover', $newName);  
+                $request['cover'] = $newName;
+            }
 
             $siswa = Student::findOrFail($id);
 
             $siswa->update([
-                'nis' => $request->nis,
                 'nama' => $request->nama,
-                'rombel' => $request->rombel,
-                'rayon' => $request->rayon,
+                'email' => $request->email,
                 'tgl_lahir' => $request->tgl_lahir,
+                'no_tlpn' => $request->no_tlpn,
+                'linkedin' => $request->linkedin,
+                'instagram' => $request->instagram,
+                'facebook' => $request->facebook,
+                'twitter' => $request->twitter,
+                'image' => $request->image,
             ]);
 
             $updateDataSiswa = Student::where('id', $siswa->id)->first();

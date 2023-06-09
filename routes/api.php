@@ -28,9 +28,3 @@ Route::post('/students/store', [StudentController::class, 'store']);
 Route::get('/students/{id}', [StudentController::class, 'show']);
 Route::patch('/students/update/{id}', [StudentController::class, 'update']);
 Route::delete('/students/delete/{id}', [StudentController::class, 'destroy']);
-
-Route::get('/images', [ImageController::class, 'index']);
-Route::post('/images/store', [ImageController::class, 'store']);
-
-Route::get('/albums', [AlbumController::class, 'index']);
-Route::post('/albums/store', [AlbumController::class, 'store']);
